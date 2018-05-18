@@ -6,22 +6,30 @@ using System.Threading.Tasks;
 
 namespace BD_Game {
 
+    public class Position {
+
+        public uint xCoord;
+        public uint yCoord;
+
+        //constructor
+        public Position(uint a, uint b) {
+
+            this.xCoord = a;
+            this.yCoord = b;
+
+        }
+
+    }
+
+
+
     public class Piece {
 
-        public uint positionX;
-        public uint positionY;
-        private string colour;
+        private uint positionX {get; set;}
+        private uint positionY {get; set;}
+        private string colour {get; set;}
 
-        //Accessors
-     
-        public string getColour() {
-            return this.colour;
-        }
-
-        public void setColour(string col) {
-            this.colour = col;
-        }
-
+        public List<object> legalMoves = new List<object>();
     }
 
     public class Pawn : Piece{
@@ -30,23 +38,23 @@ namespace BD_Game {
         public Pawn (string colour, uint xCoord, uint yCoord, ref Piece[][] boardPosition) {
 
             //set colour
-            this.setColour(colour);
+            this.colour = (colour);
 
             //set current position
-            this.positionX = xCoord;
-            this.positionY = yCoord;
+            positionX = xCoord;
+            Pawn.positionY = yCoord;
             
         }
 
 
-        public int LegalMoves(ref Piece[][] boardPosition) {
+        public void CalculateLegalMoves(ref Piece[][] boardPosition) {
 
-            //check left attacking square
-            if (positionX > 0 && boardPosition[positionX - 1][positionY + 1] != null) {
+            //check left attacking square legal
+            if (Pawn.positionX > 0 && boardPosition[positionX - 1][positionY + 1] != null) {
                 //if enemy
-                if(!(boardPosition[positionX - 1][positionY + 1].getColour().Equals(this.getColour()))) { // had at just colour
+                if(!(boardPosition[positionX - 1][positionY + 1].getColour().Equals(this.getColour()))) {
                     //add to legal moves
-                    
+                    legalMoves.Add(new Position(positionX - 1, positionY + 1));
                 }
             }
             //check right attaching square
@@ -54,16 +62,19 @@ namespace BD_Game {
                 //if enemy
                 if (!(boardPosition[positionX + 1][positionY + 1].getColour().Equals(this.getColour()))) {
                     //add to legal moves
+                    legalMoves.Add(new Position(positionX + 1, positionY + 1));
                 }
             }
 
             //1 move rule
             if(boardPosition[positionX][positionY + 1] == null) {
                 //add to legal moves
+                legalMoves.Add(new Position(positionX, positionY + 1));
 
-            } else if (positionY == 1 && boardPosition[positionX][positionY + 2] == null) { // 2 move rull
+                // 2 move rule
+            } else if (positionY == 1 && boardPosition[positionX][positionY + 2] == null) {
                 //add to legal moves
-
+                legalMoves.Add(new Position(positionX, positionY + 2));
             }
         }
     }
