@@ -1,5 +1,6 @@
 ﻿using System;
 using BD_Game;
+using Pieces;
 
 namespace CommonAttributes {
     public abstract class Common
