@@ -7,39 +7,37 @@ namespace CommonAttributes {
     {
         public static string piece_with_move_to_string (Piece pc, bool isTaking, string tile_to_move_to)
         {
-            string result;
-            switch (pc.GetType())
-            {
-                case typeof(Pawn): result = position_to_string(pc.GetPosition()) + ((isTaking) ? "x" : "-") + tile_to_move_to;
-                    break;
-                case typeof(Rook): result = "R" + position_to_string(pc.GetPosition()) + ((isTaking) ? "x" : "-") + tile_to_move_to;
-                    break;
-                case typeof(Knight):result = "N" + position_to_string(pc.GetPosition()) + ((isTaking) ? "x" : "-") + tile_to_move_to;
-                    break;
-                case typeof(Bishop):result = "B" + position_to_string(pc.GetPosition()) + ((isTaking) ? "x" : "-") + tile_to_move_to;
-                    break;
-                case typeof(King): result = "K" + position_to_string(pc.GetPosition()) + ((isTaking) ? "x" : "-") + tile_to_move_to;
-                    break;
-                case typeof(Queen): result = "Q" + position_to_string(pc.GetPosition()) + ((isTaking) ? "x" : "-") + tile_to_move_to;
-                    break;
-                default:
-                    cerr << "UNKNOWN PIECE TYPE";
-            }
+            string result = "";
+            Type type = pc.GetType();
+            if (type == typeof(Pawn))
+                result = position_to_string(pc.GetPosition()) + ((isTaking) ? "x" : "-") + tile_to_move_to;
+            else if (type.Equals(typeof(Rook)))
+                result = "R" + position_to_string(pc.GetPosition()) + ((isTaking) ? "x" : "-") + tile_to_move_to;
+            else if (type.Equals(typeof(Knight)))
+                result = "N" + position_to_string(pc.GetPosition()) + ((isTaking) ? "x" : "-") + tile_to_move_to;
+            else if (type.Equals(typeof(Bishop)))
+                result = "B" + position_to_string(pc.GetPosition()) + ((isTaking) ? "x" : "-") + tile_to_move_to;
+            else if (type.Equals(typeof(King)))
+                result = "K" + position_to_string(pc.GetPosition()) + ((isTaking) ? "x" : "-") + tile_to_move_to;
+            else if (type.Equals(typeof(Queen)))
+                result = "Q" + position_to_string(pc.GetPosition()) + ((isTaking) ? "x" : "-") + tile_to_move_to;
+            else
+                Console.Error.Write("UNKNOWN PIECE TYPE");
             return result;
         }
 
         public static Position string_to_position (string two_char_string)
         {
-            uint x = two_char_string[0] - 'A';
-            uint y = two_char_string[1] - '1';
+            uint x = (uint)two_char_string[0] - 'A';
+            uint y = (uint)two_char_string[1] - '1';
             return new Position(x, y);
         }
 
         public static string position_to_string (Position position)
         {
-            char number = '1' + position.y;
-            char letter = 'A' + position.x;
-            return letter + number;
+            char number = (char) ('1' + position.y);
+            char letter = (char) ('A' + position.x);
+            return letter.ToString() + number.ToString();
         }
 
         public struct Position
